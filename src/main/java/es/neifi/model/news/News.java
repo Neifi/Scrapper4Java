@@ -1,6 +1,9 @@
-package es.neifi.model;
+package es.neifi.model.news;
+
+import es.neifi.model.Author;
 
 public class News {
+	
 	private String title;
 	private String title2;
 	private String subtitle;
@@ -12,7 +15,7 @@ public class News {
 	private Author author;
 
 	public News() {
-
+		
 	}
 
 	public News(String title, String title2, String subtitle, String category, String content, String date,
