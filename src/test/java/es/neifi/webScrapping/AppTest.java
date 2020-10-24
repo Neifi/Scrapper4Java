@@ -14,7 +14,9 @@ public class AppTest extends TestCase {
 		return new TestSuite(AppTest.class);
 	}
 
-	public void testApp() {
+	public void isFileCreated() {
+		Huffingtonpost huffingtonpost_scrap = new Huffingtonpost("politica", 1);
+		
 		assertTrue(true);
 	}
 	
