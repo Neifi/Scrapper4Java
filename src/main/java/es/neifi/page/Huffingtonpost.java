@@ -1,4 +1,4 @@
-package es.neifi.webScrapping;
+package es.neifi.page;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -39,8 +39,12 @@ public class Huffingtonpost {
 
 	}
 
-	
-	private int getStatusConnectionCode(String url) {
+	public Huffingtonpost() {
+		this.events = new EventManager(NewsOperation.CREATE_NEW);
+		events.subscribe(NewsOperation.CREATE_NEW, new OnCreateNews());
+	}
+
+	public int getStatusConnectionCode(String url) {
 
 		Response response = null;
 		try {
@@ -55,7 +59,7 @@ public class Huffingtonpost {
 
 	}
 
-	private ArrayList<String> getPageUrl(String categoria, int pages) {
+	public ArrayList<String> getPageUrl(String categoria, int pages) {
 		String urlCategoriaPolitica = "https://www.huffingtonpost.es/" + categoria;
 		String urlGeneral = "https://www.huffingtonpost.es";
 		String index = "";
@@ -71,14 +75,12 @@ public class Huffingtonpost {
 					throw new RuntimeException("paginación incorrecta");
 				}
 
-				System.out.println("Retrieving data");
 				Elements pageContent = doc.select("h3.card__headline");
 
 				for (Element element : pageContent) {
 					url = urlGeneral + element.getElementsByAttribute("href").attr("href");
-					System.out.println("Creating news...");
-					createNewsFromUrlData(url);
-
+					
+					urls.add(url);
 					int aux = i + 1;
 					index = "/" + aux + "/";
 				}
@@ -107,7 +109,7 @@ public class Huffingtonpost {
 		return document;
 	}
 
-	private void createNewsFromUrlData(String url) {
+	public News createNewsFromUrlData(String url) {
 		String title;
 		String subtitle;
 		String category;
@@ -128,12 +130,23 @@ public class Huffingtonpost {
 			content += "\n" + elementTxt.getElementsByTag("p").text();
 		}
 
+		content = "";
+		News newsItem = createNewsItem(title, subtitle, category, content, date, newsLink);
+		return createNewsTxtFile(newsItem);
+
+
+	}
+
+	private News createNewsTxtFile(News newsItem) {
+		events.notify(NewsOperation.CREATE_NEW, newsItem);
+		return newsItem;
+	}
+
+	private News createNewsItem(String title, String subtitle, String category, String content, String date,
+			String newsLink) {
 		News newsItem = new NewsBuildier().date(date).category(category).title(title).subtitle(subtitle)
 				.content(content).url(newsLink).build();
-
-		content = "";
-		events.notify(NewsOperation.CREATE_NEW, newsItem);
-
+		return newsItem;
 	}
 
 }

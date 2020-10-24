@@ -24,10 +24,6 @@ public class NewsBuildier {
 		return this;
 	}
 
-	public NewsBuildier title2(String title2) {
-		this.title2 = title2;
-		return this;
-	}
 
 	public NewsBuildier subtitle(String subtitle) {
 		this.subtitle = subtitle;
@@ -49,20 +45,14 @@ public class NewsBuildier {
 		return this;
 	}
 
-	public NewsBuildier lastUpdate(String lastUpdate) {
-		this.lastUpdate = lastUpdate;
-		return this;
-	}
+
 
 	public NewsBuildier url(String url) {
 		this.url = url;
 		return this;
 	}
 
-	public NewsBuildier author(Author author) {
-		this.author = author;
-		return this;
-	}
+
 
 	public News build() {
 		return new News(title, title2, subtitle, category, content, date, lastUpdate, url, author);

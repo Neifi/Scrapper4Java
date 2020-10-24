@@ -15,7 +15,6 @@ public class OnCreateNews implements EventListener{
 	public void update(String eventType, News news) {
 		FileService fileService = new FileService();
 		try {
-			System.out.println("creating txt...");
 			fileService.createTxtOfNews(news);
 		} catch (IOException e) {
 			e.printStackTrace();
